@@ -57,12 +57,17 @@ var setCurrentAlbum = function(album) {
     $albumSongList.append($newRow);
   }
 };
-
+///Assignment-27
 var findParentByClassName = function(element, targetClass){
+  var currentParent = element.parentElement;
+    //while (currentParent.className != targetClass && currentParent.className !== null) {
   if (element) {
-    var currentParent = element.parentElement;
-    while (currentParent.className != targetClass && currentParent.className !== null) {
-           currentParent = currentParent.parentElement;
+    currentParent = currentParent.parentElement;
+    if(currentParent == null) {
+      alert('No parent found');
+    }
+    else (currentParent && currentParent.className !== targetClass) {
+      alert('No parent found with that class name');
     }
     return currentParent;
     }
