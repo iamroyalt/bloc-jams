@@ -1,3 +1,14 @@
+//*********   Assignment-32
+var setSong = function(songNumber) {
+  //use parseInt to convert SongNumber value to integer
+  currentlyPlayingSongNumber = parseInt(songNumber);
+  //use -1 to get correct index for song in array
+  currentSongFromAlbum = currentAlbum.songs[songNumber -1];
+};
+
+var getSongNumberCell = function(number){
+  return $('.song-item-number[data-song-number=" ' + number + '"]');
+};
 
 var createSongRow = function(songNumber, songName, songLength) {
   var template =
@@ -81,9 +92,11 @@ var trackIndex = function(album, song) {
     $('.currently-playing .artist-song-mobile').text(currentSongFromAlbum.title + " - " + currentAlbum.title);
     $('.main-controls .play-pause').html(playerBarPauseButton);
 
+
     var lastSongNumber = getLastSongNumber(currentSongIndex);
-    var $nextSongNumberCell = $('.song-item-number[data-song-number="' + currentlyPlayingSongNumber + '"]');
-    var $lastSongNumberCell = $('.song-item-number[data-song-number="' + lastSongNumber + '"]');
+//************     Assignment-32 changes
+    var $nextSongNumberCell = getSongNumberCell(currentlyPlayingSongNumber);
+    var $lastSongNumberCell = getSongNumberCell(lastSongNumber);
 
     $nextSongNumberCell.html(pauseButtonTemplate);
     $lastSongNumberCell.html(lastSongNumber);
@@ -137,21 +150,26 @@ var clickHandler = function(targetElement) {
 
 	if (currentlyPlayingSongNumber !== null) {
 		// Revert to song number for currently playing song because user started playing new song.
-		var currentlyPlayingCell = $('.song-item-number[data-song-number="' + currentlyPlayingSongNumber + '"]');
+//*******  Assignment-32
+		var currentlyPlayingCell = getSongNumberCell(currentlyPlayingSongNumber);
 		currentlyPlayingCell.html(currentlyPlayingSongNumber);
 	}
 	if (currentlyPlayingSongNumber !== songNumber) {
 		// Switch from Play -> Pause button to indicate new song is playing.
 		$(this).html(pauseButtonTemplate);
-		currentlyPlayingSongNumber = songNumber;
-    currentSongFromAlbum = currentAlbum.songs[songNumber - 1];
+
+//*******   Assignment-32
+		setSong(songNumber);
+    //currentSongFromAlbum = currentAlbum.songs[songNumber - 1];
     updatePlayerBarSong();
 	} else if (currentlyPlayingSongNumber === songNumber) {
 		// Switch from Pause -> Play button to pause currently playing song.
 		$(this).html(playButtonTemplate);
     $('.main-controls .play-pause').html(playerBarPlayButton);
-		currentlyPlayingSongNumber = null;
-    currentSongFromAlbum = null;
+//********  Assignment-32
+		//currentlyPlayingSongNumber = null;
+    //currentSongFromAlbum = null;
+    setSong(songNumber);
 	}
 };
 
