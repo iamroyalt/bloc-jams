@@ -59,7 +59,7 @@ var createSongRow = function(songNumber, songName, songLength) {
 
   $row.find('.song-item-number').click(clickHandler);
   $row.hover(onHover, offHover);
-  //console.log("songNumber type is " + typeof songNumber + "\n and currentlyPlayingSongNumber type is " + typeof currentlyPlayingSongNumber);
+  ("songNumber type is " + typeof songNumber + "\n and currentlyPlayingSongNumber type is " + typeof currentlyPlayingSongNumber);
   return $row;
 };
 
