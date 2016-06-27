@@ -3,7 +3,8 @@ var createSongRow = function(songNumber, songName, songLength) {
     '<tr class="album-view-song-item">'
     + '<td class="song-item-number" data-song-number="' + songNumber + '">' + songNumber + '</td>'
     + '<td class="song-item-title">' + songName + '</td>'
-    + '<td class="song-item-duration">' + songLength + '</td>'
+    //wrap songLength variable in filterTimeCode() call so the time lengths are formatted
+    + '<td class="song-item-duration">' + filterTimeCode(songLength) + '</td>'
     + '</tr>';
 
   var $row = $(template);
@@ -187,12 +188,15 @@ var previousSong = function() {
 };
   // Update the Player Bar information
 var updatePlayerBarSong = function() {
+  //add method so total time is set when a song first plays
+  //wrap args passed to setTotalTimeInPlayerBar in a filterTimeCode() so the out put below seek bar is formatted
+  setTotalTimeInPlayerBar(filterTimeCode(currentSongFromAlbum.duration));
   $('.currently-playing .song-name').text(currentSongFromAlbum.title);
   $('.currently-playing .artist-name').text(currentAlbum.artist);
   $('.currently-playing .artist-song-mobile').text(currentSongFromAlbum.title + " - " + currentAlbum.artist);
   $('.main-controls .play-pause').html(playerBarPauseButton);
-};
 
+};
 
 //Album templates
 var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
@@ -272,6 +276,10 @@ var updateSeekBarWhileSongPlays = function() {
       var $seekBar = $('.seek-control .seek-bar');
 
       updateSeekPercentage($seekBar, seekBarFillRatio);
+
+      //add setCurrentTimeInPlayerBar so current time updates with playback
+      //wrap args passed to setCurrentTimeInPlayerBar in a filterTimeCode() so the output below is formatted
+      setCurrentTimeInPlayerBar(filterTimeCode(this.getTime()));
     });
   }
 };
@@ -281,6 +289,35 @@ var seek = function(time) {
     currentSoundFile.setTime(time);
   }
 }
+
+//******** Assignment-34
+
+//write function called setCurrentTimeInPlayerBar taht takes one argument
+var setCurrentTimeInPlayerBar = function(currentTime) {
+  //sets the text of the element with the .current-time calss to current time in song
+  $('.current-time').text(currentTime);
+};
+
+//write function called setTotalTimeInPlayerBar that takes one argument
+var setTotalTimeInPlayerBar = function(totalTime){
+  //sets the text of the element with total-time to length of song
+  $('.total-time').text(totalTime);
+};
+//write function called filterTimeCode that takes one argument
+var filterTimeCode = function(timeInSeconds){
+  //use parseFloat() to get seconds in number form
+  var timeInNumbers = parseFloat(timeInSeconds);
+  //store variable for whole seconds and whole minutes using Math.floor()
+  var rounded = Math.floor(timeInNumbers);
+  var minutes = rounded / 60;
+  var seconds = rounded % 60;
+  var tens = seconds / 10;
+  var ones = seconds % 10;
+
+  //return the format in X:XX
+  return Math.floor(minutes) + ":" + Math.floor(tens) + Math.floor(ones);
+};
+
 
 $(document).ready(function() {
   setCurrentAlbum(albumPicasso);
